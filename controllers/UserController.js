@@ -85,7 +85,13 @@ const login = async (req, res) => {
 
 // Update user
 const update = async (req, res) => {
-  const { name, password, bio } = req.body;
+  const { 
+    name, 
+    password, 
+    cpf,
+    genero, 
+    estadoCivil,
+    dataNascimento } = req.body;
 
   let profileImage = null;
 
@@ -99,10 +105,6 @@ const update = async (req, res) => {
     "-password"
   );
 
-  if (name) {
-    user.name = name;
-  }
-
   if (password) {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
@@ -113,10 +115,26 @@ const update = async (req, res) => {
     user.profileImage = profileImage;
   }
 
-  if (bio) {
-    user.bio = bio;
+  if (name) {
+    user.name = name;
   }
 
+  if (cpf) {
+    user.cpf = cpf;
+  }
+
+  if(genero){
+    user.genero = genero;
+  }
+
+  if(estadoCivil){
+    user.estadoCivil = estadoCivil;
+  }
+
+  if(dataNascimento){
+    user.dataNascimento = dataNascimento;
+  }
+  
   await user.save();
 
   res.status(200).json(user);
